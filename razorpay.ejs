@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy a Book</title>
+    <link rel="stylesheet" href="https://unpkg.com/bulma@0.9.0/css/bulma.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+</head>
+<body>
+    <section class="hero is-link is-fullheight">
+        <div class="hero-body is-centered">
+            <div class="container">
+                <div class="columns is-centered is-vecentered">
+                    <div class="column is-6">
+                        <p class="title is-size-1">You can read this book just for Rs. 100</p>
+                        <button class="button is-link is-light is-medium" id="rzp-button1">Get the Book</button>
+                    </div>
+
+                    <div class="column is-5">
+                        <figure class="image">
+                            <img src="./book.jpg" style="border-radius: 10px; max-width: 100px; max-height: 100px;" >
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        axios.post('/orders').then((info) =>{
+            console.log(info)
+            var options = {
+                "key": "rzp_test_cYwvp9iQ4YNSN1", 
+                "name": "The Sparks Foundation",
+                "description": "Payment Integration",
+                "image": "https://example.com/your_logo",
+                "order_id": info.data.id,
+                 
+                "callback_url": "/is-order-completed",
+                "handler": function (response){
+                    alert( "Your Payment is success","Your order id is : ", response.razorpay_payment_id);
+                    console.log("payment_id : ",response.razorpay_payment_id);
+                    console.log("order_id : ", response.razorpay_order_id);
+                    console.log("signatures : ",response.razorpay_signature)}
+
+            };
+            var rzp1 = new Razorpay(options);
+            document.getElementById('rzp-button1').onclick = function(e){
+                rzp1.open();
+                e.preventDefault();
+            }
+        })
+        
+    </script>
+</body>
+</html>
