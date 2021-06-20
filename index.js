@@ -9,7 +9,7 @@ const razorpay = new Razorpay({
     key_secret:'VOkXgiH54o5yru4dxdUiLqZi' ,
 })
 
-app.set('views','views')
+
 app.set('view engine', 'ejs')
 app.set(express.urlencoded({extended: false}))
 
